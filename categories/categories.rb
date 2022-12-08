@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'nokogiri'
+require_relative '../saving_utils.rb'
 
 uri = 'https://www.udemy.com/'
 
@@ -14,12 +15,22 @@ class UdemyParser
     return html
   end
 
+  def save_file(items)
+    save = Save.new
+    save.saveToCSV(File.join(File.dirname(__FILE__), 'categories.csv'), items, ['name'])
+    save.saveToJSON(File.join(File.dirname(__FILE__), 'categories.json'), items)
+  end
+
   def parse
     categories = []
     getHtml.css('.pill-group--pill--3z4Sb').each do |category|
-      categories.push( category.at('span').text )
+      categories.push(
+        name: category.at('span').text
+       )
     end
-    puts categories
+
+    save_file(categories)
+
   end
 end
 

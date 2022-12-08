@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'nokogiri'
+require_relative '../saving_utils.rb'
 
 uri = 'https://www.udemy.com/'
 
@@ -14,6 +15,12 @@ class UdemyParser
     return html
   end
 
+  def save_file(items)
+    save = Save.new
+    save.saveToCSV(File.join(File.dirname(__FILE__), 'trending_courses.csv'), items, ['name', 'stusents_count'])
+    save.saveToJSON(File.join(File.dirname(__FILE__), 'trending_courses.json'), items)
+  end
+
   def parse
     trending_courses = []
     getHtml.css(".trending-topics--topic--2pYSR").each do |course|
@@ -22,10 +29,10 @@ class UdemyParser
     
         trending_courses.push(
             name: name.first,
-            stusents_count:stusents_count.first
+            stusents_count:stusents_count.first.chomp(' students')
         )
     end
-    puts trending_courses
+   save_file(trending_courses)
   end
 end
 
