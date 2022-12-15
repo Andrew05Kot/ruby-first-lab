@@ -1,8 +1,8 @@
 require 'csv'
 require 'json'
 
-class Save
-    def saveToCSV(file, data, headers)
+class StorageService
+    def save_csv(file, data, headers)
       CSV.open(file, "w", :write_headers => true, :col_sep => '|', :headers => headers) do |csv|
           data.each{ |i|
             csv << i.values
@@ -10,7 +10,9 @@ class Save
         end
     end
     
-    def saveToJSON(file, data)
-      File.write(file, JSON.dump(data))
+    def save_json(file, data)
+      File.open(file, "w") do |f|
+        f.puts(data.to_json)
+      end
     end
 end

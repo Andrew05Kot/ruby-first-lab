@@ -16,9 +16,9 @@ class UdemyParser
   end
 
   def save_file(items)
-    save = Save.new
-    save.saveToCSV(File.join(File.dirname(__FILE__), 'categories.csv'), items, ['name'])
-    save.saveToJSON(File.join(File.dirname(__FILE__), 'categories.json'), items)
+    storag_service = StorageService.new
+    storag_service.save_csv(File.join(File.dirname(__FILE__), 'categories.csv'), items, ['name'])
+    storag_service.save_json(File.join(File.dirname(__FILE__), 'categories.json'), items)
   end
 
   def parse
